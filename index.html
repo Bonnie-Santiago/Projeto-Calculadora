@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CaLCULADORA</title>
+  <style>
+
+    *{
+      margin: 0%;
+      padding: 0%;
+    }
+
+    #fundo {
+      background-image: linear-gradient(rgb(52, 1, 79),rgb(243, 5, 196));
+      height: 100vh;
+      color: whitesmoke;
+      font-family: fantasy;
+      text-align: center;
+    }
+
+    #calculadora {
+      background-color: rgb(0, 0, 0);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      border-radius: 15px;
+      padding: 15px;
+     
+    }
+
+    .botao {
+      width: 50px;
+      height: 50px;
+      font-size: 25px;
+      cursor: pointer;
+      margin: 3px;
+      background-color: rgb(241, 104, 7);
+      border-radius: 50px;
+      border: none;
+      color: whitesmoke;
+    }
+
+    .botao:hover {
+      background-color: gray;
+    }
+
+    .botao-operacao {
+      background-color: gray;
+      color: white;
+    }
+
+    #painel {
+      background-color: whitesmoke;
+      width: 218px;
+      height: 30px;
+      margin: 5px;
+      font-size: 25px;
+      color: black;
+      text-align: right;
+      padding: 3px;
+    }
+
+  </style>
+</head>
+<body>
+    <div id="fundo">
+      <div id="calculadora">
+        <p id="painel"></p>
+        <table>
+          <tr>
+            <td>   <button class="botao" onclick="clean()">C</button>   </td>
+            <td>   <button class="botao" onclick="back()">Del</button>   </td>
+            <td>   <button class="botao" onclick="insert('/')">/</button>   </td>
+            <td>   <button class="botao" onclick="insert('*')">*</button>   </td>
+          </tr>
+          <tr>
+            <td>   <button class="botao" onclick="insert('7')">7</button>   </td>
+            <td>   <button class="botao" onclick="insert('8')">8</button>   </td>
+            <td>   <button class="botao" onclick="insert('9')">9</button>   </td>
+            <td>   <button class="botao" onclick="insert('-')">-</button>   </td>
+          </tr>
+          <tr>
+            <td>   <button class="botao" onclick="insert('4')">4</button>   </td>
+            <td>   <button class="botao" onclick="insert('5')">5</button>   </td>
+            <td>   <button class="botao" onclick="insert('6')">6</button>   </td>
+            <td>   <button class="botao" onclick="insert('+')">+</button>   </td>
+          </tr>
+          <tr>
+            <td>   <button class="botao" onclick="insert('1')">1</button>   </td>
+            <td>   <button class="botao" onclick="insert('2')">2</button>   </td>
+            <td>   <button class="botao" onclick="insert('3')">3</button>   </td>
+            <td  rowspan="2">   <button class="botao" style="height: 106px;" onclick="calc()">=</button>   </td>
+          </tr>
+          <tr>
+            <td colspan="2">   <button class="botao" style="width: 106px;" onclick="insert('0')">0</button>   </td>
+            <td>   <button class="botao" onclick="insert('.')">.</button>   </td>
+           
+          </tr>
+        </table>
+
+      </div>
+    </div>
+
+    <script>
+
+      function insert(num) {
+        var numero = document.querySelector('#painel').innerHTML;
+        var lastChar = numero[numero.length - 1];
+        var maxDigitos = 10; // Definindo o número máximo de dígitos permitido
+        
+        if (numero.length < maxDigitos) { // Verificando se o número de dígitos é menor que o máximo permitido
+          document.querySelector('#painel').innerHTML = numero + num;
+
+        if (['+', '-', '*', '/'].includes(lastChar) && ['+', '-', '*', '/'].includes(num)) {
+          document.querySelector('#painel').innerHTML = numero.substring(0, numero.length - 1) + num;
+        } else {
+          document.querySelector('#painel').innerHTML = numero + num;
+
+        if (num === '+' || num === '-' || num === '*' || num === '/') { // Verificando se o dígito inserido é um operador
+          var operador = document.querySelector('.botao-operacao'); // Selecionando o botão de operação anterior, se houver
+          if (operador) { // Se o botão de operação anterior existir, remover a classe 'botao-operacao'
+             operador.classList.remove('botao-operacao');
+        }
+        var botao = document.querySelector("button[onclick*='" + num + "']"); // Selecionando o botão de operação atual
+           botao.classList.add('botao-operacao'); // Adicionando a classe 'botao-operacao' ao botão de operação atual
+            
+        }}}};
+
+      /*function insert(num) {
+        var numero = document.querySelector('#painel').innerHTML
+        document.querySelector('#painel').innerHTML = numero + num;
+      }*/
+
+      function clean() {
+        document.querySelector('#painel').innerHTML = '';
+      }
+
+      function back() {
+        var numero = document.querySelector('#painel').innerHTML;
+        document.querySelector('#painel').innerHTML = numero.substring(0, numero.length -1)
+      }
+
+      function calc() {
+        var resultado = eval(document.querySelector('#painel').innerHTML) || '0';
+        document.querySelector('#painel').innerHTML = `${resultado.toFixed(2)}`;
+  /* A função eval() é chamada diretamente no primeiro comando, sem a necessidade de criar uma variável intermediária.
+  O operador || é usado para verificar se o resultado da expressão é nulo 
+  ou indefinido e, em caso afirmativo, definir o valor padrão "nada" em seu lugar. 
+  Em seguida, o resultado é exibido no painel usando a propriedade innerHTML do elemento HTML.*/
+}
+
+    </script>
+  
+</body>
+</html>
